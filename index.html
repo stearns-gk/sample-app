@@ -1,21 +1,39 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">
+<html lang="en">
 
 <head>
-  <title>App Enablement Showcase</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="description" content="App Enablement Showcase">
-  <meta name="author" content="rpotesil">
-  <link rel="stylesheet" href="css/w3.css" type="text/css" />
-  <!-- Jquery API -->
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript" src="js/modernizr.js"></script>
-  <script type="text/javascript">
-    $(window).load(function() {
-      // Animate loader off screen
-      $(".se-pre-con").fadeOut("slow");;
-    });
-  </script>
+  <meta charset="utf-8" />
+  <title>App Enablement Showcase | Side Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+  <!-- Google Fonts -->
+  <link rel="stylesheet" type="text/css" href="css/google.fonts.css" />
+  <!-- Bootstrap 4.5.2 CSS -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+  <!-- Slick 1.8.1 jQuery plugin CSS (Sliders) -->
+  <link rel="stylesheet" type="text/css" href="css/slick.css" />
+  <!-- Fancybox 3 jQuery plugin CSS (Open images and video in popup) -->
+  <link rel="stylesheet" type="text/css" href="css/jquery.fancybox.min.css" />
+  <!-- AOS 2.3.4 jQuery plugin CSS (Animations) -->
+  <link rel="stylesheet" type="text/css" href="css/aos.css" />
+  <!-- FontAwesome CSS -->
+  <link rel="stylesheet" type="text/css" href="css/all.min.css" />
+  <!-- Startup CSS (Styles for all blocks) - Remove ".min" if you would edit a css code -->
+  <link rel="stylesheet" type="text/css" href="css/style.min.css" />
+  <!-- jQuery 3.5.1 -->
+  <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+  <!-- Bootstrap 4.5.2 JS -->
+  <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+  <!-- Fancybox 3 jQuery plugin JS (Open images and video in popup) -->
+  <script type="text/javascript" src="js/jquery.fancybox.min.js"></script>
+  <!-- Slick 1.8.1 jQuery plugin JS (Sliders) -->
+  <script type="text/javascript" src="js/slick.min.js"></script>
+  <!-- AOS 2.3.4 jQuery plugin JS (Animations) -->
+  <script type="text/javascript" src="js/aos.js"></script>
+  <!-- Maskedinput jQuery plugin JS (Masks for input fields) -->
+  <script type="text/javascript" src="js/jquery.maskedinput.min.js"></script>
+  <!-- Startup JS (Custom js for all blocks) -->
+  <script type="text/javascript" src="js/script.js"></script>
   <!-- App Enablement scripts-->
   <script type="text/javascript" src="libs/AppEnablementConnector.js"></script>
   <script type="text/javascript" src="libs/api/Common.js"></script>
@@ -24,19 +42,89 @@
   <script type="text/javascript" src="libs/api/Pos.js"></script>
   <!-- Main App scripts -->
   <script type="text/javascript" src="js/app.js"></script>
+
+  <script type="text/javascript">
+
+    var oAppEnablementCommonInstance = new comGkSoftwareGkrAppEnablementApi.Common();
+    var oAppEnablementExternalMasterdataInstance = new comGkSoftwareGkrAppEnablementApi.ExternalMasterdata();
+    var oAppEnablementMasterdataInstance = new comGkSoftwareGkrAppEnablementApi.Masterdata();
+    var oAppEnablementPosInstance = new comGkSoftwareGkrAppEnablementApi.Pos();
+
+    function getSessionContext() {
+      oAppEnablementCommonInstance.getSessionContext('currentSessionContextOK', 'currentSessionContextFailed');
+    }
+
+    function currentSessionContextOK(context) {
+
+    }
+
+    function currentSessionContextFailed(err) {
+      
+    }
+
+    // hard-coded Red Bull item number
+    function registerRecommendation() {
+        getSessionContext();
+        var registerLineItemRequest = oAppEnablementPosInstance.createRegisterLineItemRequest("9556786", this.context);
+        oAppEnablementPosInstance.registerLineItem('registerDataOk', 'registerDataFailed', registerLineItemRequest);
+    }
+
+    function registerDataOk() {
+
+    }
+
+    function registerDataFailed() {
+
+    }
+
+
+
+  </script>
+
+  <style>
+    .pulse {
+      margin: 100px;
+      display: block;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #cca92c;
+      cursor: pointer;
+      box-shadow: 0 0 0 rgba(204, 169, 44, 0.4);
+      animation: pulse 2s infinite;
+    }
+
+    .item {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.4);
+        box-shadow: 0 0 0 0 rgba(158, 158, 158, 0.692);
+      }
+
+      70% {
+        -moz-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+        box-shadow: 0 0 0 10px rgba(158, 158, 158, 0.315);
+      }
+
+      100% {
+        -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+        box-shadow: 0 0 0 0 rgba(158, 158, 158, 0);
+      }
+    }
+  </style>
 </head>
 
-<body style="overflow:hidden;" >
-<!-- <div>
-  <img src="images/loves.png" style="width: 500px;">
-</div> -->
-<div style="width: 100%; height: 80%; background-repeat: no-repeat; text-align: center;">
-  <div style="padding-top: 20px;">
-    <span>
-      <button class="showerButton" onclick="registerShowerItem()">Buy Item</button>
-    </span>
-  </div>
-</div>
+<body class="sidepanel" onload="initialLoad()" style="overflow: hidden; width: 600px; height: 400px; margin: 0;">
+    <div id="attestationView" onclick="registerRecommendation()" style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 20px; box-sizing: border-box; width: 600px; height: 400px; padding: 0 20px; text-align: center; background-color:rgb(231, 235, 240);">
+      <img class="item" id="retailerLogo" src="redBull.png" style="width: 40%; margin: 0; flex-shrink: 0;" />
+      <div id="clickHere" style="width: 50%;">
+        <h6 style="margin-top: 10px; margin-bottom: 10px; color: rgb(54, 52, 52); font-weight: bold; font-size: 28px; font-family:Arial, Helvetica, sans-serif" id="itemName">Red Bull promotion 20% off 2 cans<br/> Ask customer</h6>
+        <img class="" id="" src="clickHere1.png" style="width: 95%; margin: 20px 0 0 0;" />
+      </div>
+    </div>
 </body>
-</html>
 
+</html>
